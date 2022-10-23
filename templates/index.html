@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+{% block title %} My_Home {% endblock %}
+
+{% block body %}
+
+<div class="container">
+	<div class="row">
+		<div class="col md-12">
+			<div class="jumbotron p-3">
+				<h2>
+					Manage <strong>Employees</strong>
+					<button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#myemploymodal">Add new Employees</button>
+				</h2>
+
+				{% with messages = get_flashed_messages() %}
+				{% if messages %}
+				{% for message in messages %}
+				<div class="alert alert-success alert-dismissable" role="alert">
+					<button type="button" class="close" data-dismiss ="alert" aria-label="close">
+						<span aria-hidden="true">X</span>
+					</button>
+				{{message}}
+				</div> 
+				
+		<!-- Creating a for Table to DISPLAY data from-->
+				{% endfor %}
+				{% endif %}
+				{% endwith %}
+
+		<table class="table table-hover table-dark">
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Phone</th>
+						<th>Action</th>
+					</tr>
+					<!-- Creating a for loop to DISPLAY data from-->
+					{% for row in employees %}
+					<tr>
+						<td>{{row.id}}</td>
+						<td>{{row.name}}</td>
+						<td>{{row.email}}</td>
+						<td>{{row.phone}}</td>
+						<td><a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id}}">Edit</a>
+							<a href="/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to DELETE ?')">Delete</a></td>
+					</tr>
+
+		  	<!-- Modal EDIT Employee inside table Start-->
+		  	<div class="modal fade" id="modaledit{{row.id}}" role="dialog" aria-hidden="true">
+		  		<div class="modal-dialog modal-dialog-centered" role="document">
+		    		<div class="modal-content">
+		      		<div class="modal-header">
+		        	<button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close">
+		         	<span aria-hidden="true" class="ion-ios-close"></span>
+		        	</button>
+		      </div>
+		      <div class="modal-body p-4 p-md-5">
+		      	<div class="icon d-flex align-items-center justify-content-center">
+		      		<span class="ion-ios-person"></span>
+		      	</div>
+		      	<h3 class="text-center mb-4">Update Information</h3>
+		      	<form action="{{url_for('update')}}" class="login-form" method="POST">
+		      		<div class="form-group">
+		      			<input type="hidden" name="id" value="{{row.id}}">
+		      			<input type="text" name="name" class="form-control rounded-left" placeholder="Name" value="{{row.name}}" required="">
+		      		</div>
+	            	<div class="form-group d-flex">
+	              		<input type="email" name="email" class="form-control rounded-left" placeholder="Email" value="{{row.email}}" required="">
+	            	</div>
+	            	<div class="form-group d-flex">
+	              		<input type="number" name="phone" class="form-control rounded-left" placeholder="Phone" value="{{row.phone}}" required="
+	              		">
+	            	</div>
+	            	<div class="form-group">
+	            	<button type="submit" class="form-control btn btn-primary rounded submit px-3">Update Employee data</button>
+	            	</div>
+	            	<div class="form-group d-md-flex">
+	            </div>
+	            </form>
+		      </div>
+		      <div class="modal-footer justify-content-center">
+		      	<button type="submit" class="btn btn-dark btn-xs rounded submit px-3 float-right" data-dismiss="modal" aria-label="Close">Close</button></div>
+		    	</div>
+		  	</div>
+		  	<!-- Modal EDIT Employee  Ends-->
+					{% endfor %}
+		</table>
+				
+			</div>
+			<!-- Modal ADD Employee Start -->
+			<div class="modal fade" id="myemploymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  		<div class="modal-dialog modal-dialog-centered" role="document">
+		    		<div class="modal-content">
+		      		<div class="modal-header">
+		        	<button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close">
+		         	<span aria-hidden="true" class="ion-ios-close"></span>
+		        	</button>
+		      </div>
+		      <div class="modal-body p-4 p-md-5">
+		      	<div class="icon d-flex align-items-center justify-content-center">
+		      		<span class="ion-ios-person"></span>
+		      	</div>
+		      	<h3 class="text-center mb-4">Add Employee</h3>
+		      	<form action="{{url_for('insert')}}" method="POST" class="login-form">
+		      		<div class="form-group">
+		      			<input type="text" name="name" class="form-control rounded-left" placeholder="Name" required="">
+		      		</div>
+	            	<div class="form-group d-flex">
+	              		<input type="email" name="email" class="form-control rounded-left" placeholder="Email" required="">
+	            	</div>
+	            	<div class="form-group d-flex">
+	              		<input type="number" name="phone" class="form-control rounded-left" placeholder="Phone" required="
+	              		">
+	            	</div>
+	            	<div class="form-group">
+	            	<button type="submit" class="form-control btn btn-primary rounded submit px-3">Add Employee</button>
+	            	</div>
+	            	<div class="form-group d-md-flex">
+	            </div>
+	          </form>
+		      </div>
+		      <div class="modal-footer justify-content-center">
+		      	<button type="submit" class="btn btn-dark btn-xs rounded submit px-3 float-right" data-dismiss="modal" aria-label="Close">Close</button></div>
+		    	</div>
+		  	</div></div>
+		  	<!-- Modal ADD Employee Ends-->
+
+		  	
+
+			
+		</div>
+	</div>
+</div>
+<!-- Code goes here<button class="btn-lg btn-primary">IKO</button> -->
+
+{% endblock %}
